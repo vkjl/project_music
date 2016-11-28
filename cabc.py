@@ -1,37 +1,47 @@
 from tkinter import *
 from tkinter import ttk
 from random import randint
+
+# funktsioonid
+
 def alusta():
     # uuendab akent ja paiguteb sinna kaks play nuppu
 
-
-    play_nupp_a = ttk.Button(raam, text="Esimene heli", command=mangi_heli(a))
-    play_nupp_a.grid(column=0, row=0, padx=10, pady=10)
-    play_nupp_b = ttk.Button(raam, text="Teeine heli", command=mangi_heli(b))
-    play_nupp_b.grid(column=1, row=0, padx=10, pady=10)
     return
 
-def küsimus():
-    # ??A
-    return
 
-def mangi_heli(heli):
+# muutujad
+a = []
+b = []
 
-    return
+# tegelik algus
+root = Tk()
+root.title("Kõrva kontroll")
 
-raam = Tk()
-raam.title("Kõrva kontroll")
+frame1 = Frame(root)
 
-tervitus = ttk.Label(raam, text="Tere tulemast ")
+tervitus = ttk.Label(frame1, text="Tere tulemast!")
 tervitus.grid(column=0, row=0, padx=10, pady=10, sticky=(N, W))
 
-seletus = ttk.Label(raam, text="""""")
+seletus = ttk.Label(frame1, text="""""")
 seletus.grid(column=0, row=2, padx=10, pady=10, sticky=(E, W ))
 
-start = ttk.Button(raam, text="Alusta!", command=alusta)
+start = ttk.Button(frame1, text="Alusta!", command=alusta())
 start.grid(column=0, row=4, padx=10, pady=10)
 
-raam.columnconfigure(1, weight=1)
-raam.rowconfigure(1, weight=1)
+frame1.columnconfigure(1, weight=1)
+frame1.rowconfigure(1, weight=1)
 
-raam.mainloop()
+frame2 = Frame(root)
+
+play_nupp_a = ttk.Button(frame2, text="Esimene heli", command=mangib_niisama())
+play_nupp_a.grid(column=0, row=0, padx=10, pady=10)
+
+play_nupp_b = ttk.Button(frame2, text="Teine heli", command=mangi_meloodiat())
+play_nupp_b.grid(column=1, row=0, padx=10, pady=10)
+
+küsimus = tkk.Label(frame2, text="")
+
+
+
+root.mainloop()
