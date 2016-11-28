@@ -37,7 +37,7 @@ frame2 = Frame(root)
 play_nupp_a = ttk.Button(frame2, text="Esimene heli", command=mangib_niisama())
 play_nupp_a.grid(column=0, row=0, padx=10, pady=10)
 
-play_nupp_b = ttk.Button(frame2, text="Teine heli", command=mangi_meloodiat())
+play_nupp_b = ttk.Button(frame2, text="Teine heli", command=korda_meloodiat())
 play_nupp_b.grid(column=1, row=0, padx=10, pady=10)
 
 küsimus = tkk.Label(frame2, text="")
