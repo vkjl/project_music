@@ -17,7 +17,7 @@ a = '39198_jobro_piano-ff-050 (mp3cut.net).wav'
 ais = '39199_jobro_piano-ff-051 (mp3cut.net).wav'
 h = '39200_jobro_piano-ff-052 (mp3cut.net).wav'
 noodiJärjend = [c, cis, d, dis, e, f, fis, g, gis, a, ais, h]
-
+punktid = 0
 
 def genereeri_helisid(lst):
     # teeb heli listi noodiJärjendist
@@ -68,6 +68,13 @@ def korda_või_ära_korda_meloodiat(lst):
     return uus_list
 
 
+def tulemus(onSama):
+    global punktid
+    if onSama:
+        punktid += 1
+
+
+
 class Application(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +84,7 @@ class Application(tk.Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        self.minsize(500, 300)
+        # self.minsize(500, 300)
         self.frames = {}
 
         for F in (AlgusLeht, MuusikaKuulamine1, MuusikaKuulamine2, MuusikaKuulamine3, MuusikaKuulamine4,
@@ -92,6 +99,10 @@ class Application(tk.Tk):
 
         self.show_frame(AlgusLeht)
 
+        style = ttk.Style()
+        style.configure("BW.TLabel", foreground="black", font=("Times New Roman", 15))
+        style.configure("TButton", padding=5, relief="flat", font=("Times New Roman", 13), background="#ccc")
+
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
@@ -101,48 +112,33 @@ class AlgusLeht(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Tervitus siia")
+
+        label = ttk.Label(self, style="BW.TLabel", text="""
+Tere tulemast tegema muusikalise kuulmise testi. Testi käigus kuulete kahte viisijuppi.
+
+Teie ülesandeks on aru saada, kas kuuldud helid olid samad või väikese erinevusega.
+Vastavalt sellele peate vajutama nupule "Sama" või "Erinev". Head kuulamist!
+""" )
         label.pack(pady=10, padx=10)
 
-        sissejuhTekst = ttk.Label(text="Seletav tekst siia")
-        sissejuhTekst.pack()
-
-        button1 = ttk.Button(self, text="Alusta",
+        button1 = ttk.Button(self, text="Alusta testi",
                              command=lambda: controller.show_frame(MuusikaKuulamine1))
         button1.pack()
 
+# PACK
 
 class MuusikaKuulamine1(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
         label = ttk.Label(self, text="Küsimus 1/10")
         label.pack(pady=10, padx=10)
 
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
-        button2 = tk.Button(self, text="Esimene viis",
-                            command=lambda: mängib_niisama(heliList))
-        button2.pack()
-
-        button3 = tk.Button(self, text="Teine viis",
-                            command=lambda: mängib_niisama(heliList2))
-        button3.pack()
-
-        button1 = tk.Button(self, text="Järgmine küsimus",
-                            command=lambda: controller.show_frame(MuusikaKuulamine2))
-        button1.pack()
-
-
-class MuusikaKuulamine2(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Küsimus 2/10")
-        label.pack(pady=10, padx=10)
-
-        heliList = genereeri_helisid(noodiJärjend)
-        heliList2 = korda_või_ära_korda_meloodiat(heliList)
+        onSama = True if heliList == heliList2 else False
 
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
@@ -151,6 +147,49 @@ class MuusikaKuulamine2(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
+
+        button1 = ttk.Button(self, text="Järgmine küsimus",
+                             command=lambda: controller.show_frame(MuusikaKuulamine2))
+        button1.pack()
+
+
+
+
+class MuusikaKuulamine2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Küsimus 2/10")
+        label.pack(pady=10, padx=10)
+
+        heliList = genereeri_helisid(noodiJärjend)
+        heliList2 = korda_või_ära_korda_meloodiat(heliList)
+
+        onSama = True if heliList == heliList2 else False
+
+        button2 = ttk.Button(self, text="Esimene viis",
+                             command=lambda: mängib_niisama(heliList))
+        button2.pack()
+
+        button3 = ttk.Button(self, text="Teine viis",
+                             command=lambda: mängib_niisama(heliList2))
+        button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine3))
@@ -166,6 +205,8 @@ class MuusikaKuulamine3(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -174,9 +215,18 @@ class MuusikaKuulamine3(tk.Frame):
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
 
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
+
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine4))
         button1.pack()
+
 
 
 class MuusikaKuulamine4(tk.Frame):
@@ -188,6 +238,8 @@ class MuusikaKuulamine4(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -196,10 +248,17 @@ class MuusikaKuulamine4(tk.Frame):
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
 
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
+
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine5))
         button1.pack()
-
 
 class MuusikaKuulamine5(tk.Frame):
     def __init__(self, parent, controller):
@@ -210,6 +269,8 @@ class MuusikaKuulamine5(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -217,6 +278,14 @@ class MuusikaKuulamine5(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine6))
@@ -232,6 +301,8 @@ class MuusikaKuulamine6(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -239,6 +310,14 @@ class MuusikaKuulamine6(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine7))
@@ -254,6 +333,8 @@ class MuusikaKuulamine7(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -261,6 +342,14 @@ class MuusikaKuulamine7(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine8))
@@ -276,6 +365,8 @@ class MuusikaKuulamine8(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -283,6 +374,14 @@ class MuusikaKuulamine8(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine9))
@@ -298,6 +397,8 @@ class MuusikaKuulamine9(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -305,6 +406,14 @@ class MuusikaKuulamine9(tk.Frame):
         button3 = ttk.Button(self, text="Teine viis",
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
+
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(MuusikaKuulamine10))
@@ -320,6 +429,8 @@ class MuusikaKuulamine10(tk.Frame):
         heliList = genereeri_helisid(noodiJärjend)
         heliList2 = korda_või_ära_korda_meloodiat(heliList)
 
+        onSama = True if heliList == heliList2 else False
+
         button2 = ttk.Button(self, text="Esimene viis",
                              command=lambda: mängib_niisama(heliList))
         button2.pack()
@@ -328,22 +439,53 @@ class MuusikaKuulamine10(tk.Frame):
                              command=lambda: mängib_niisama(heliList2))
         button3.pack()
 
-        button1 = ttk.Button(self, text="Lõpeta küsitlus",
+        button4 = ttk.Button(self, text="Sama",
+                             command=lambda: tulemus(onSama))
+        button4.pack()
+
+        button5 = ttk.Button(self, text="Erinev",
+                             command=lambda: tulemus(onSama))
+        button5.pack()
+
+        button1 = ttk.Button(self, text="Järgmine küsimus",
                              command=lambda: controller.show_frame(TulemusLeht))
         button1.pack()
-
 
 class TulemusLeht(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Tulemus")
+        global punktid
+        label = ttk.Label(self, text="Tulemus: {0}/10".format(punktid))
+        label.configure(font=("Times New Roman", 15))
         label.pack(pady=10, padx=10)
+
+        label1 = ttk.Label(self, text="""
+
+Muusikakeskus asub ajukoores parema kõrva kõrgusel oimusagaras.
+Musikaalsuse spekter on väga lai, ulatudes absoluutsest kuulmisest
+musikaalsuse täieliku puudumise ehk amuusiani, kui ei tunnetata
+muusikalisi signaale.
+
+On tõsi, et amuusia diagnoosiga inimesi saab õpetada muusikat tegema
+teatud tehnika abil – harjutada nad pilli mängima või koos teistega
+lihtsamaid viise laulma –, kuid musikaalsuse puudumist ehk amuusiat
+ravida ei ole võimalik.
+
+Muusika kuulamisel, loomisel ja esitamisel on kõige olulisem
+otsene tunnetusprotsess. Muusika suudab kahtlemata tekitada tugevaid
+emotsioone ja heaolutunnet, seda nii sel juhul, kui ise muusikat tehakse,
+kui ka kuulamise korral.
+""")
+        label1.configure(font=("Times New Roman", 15))
+
+        label1.pack()
+
+        punktid = 0
 
         button1 = ttk.Button(self, text="Tagasi algusesse",
                              command=lambda: controller.show_frame(AlgusLeht))
-        button1.pack()
-
+        button1.pack(pady=20)
 
 app = Application()
 app.mainloop()
