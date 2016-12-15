@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import IntVar
 from tkinter import ttk
 import winsound
 from random import randint
 import copy
 
+# selle listi võiks panna dictionarisse
 c = '39188_jobro_piano-ff-041 (mp3cut.net).wav'
 cis = '39189_jobro_piano-ff-042 (mp3cut.net).wav'
 d = '39190_jobro_piano-ff-043 (mp3cut.net).wav'
@@ -81,7 +81,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (AlgusLeht, MuusikaKuulamine1, MuusikaKuulamine2, MuusikaKuulamine3, MuusikaKuulamine4,
+        for F in (MuutujaHoidja, AlgusLeht, MuusikaKuulamine1, MuusikaKuulamine2, MuusikaKuulamine3, MuusikaKuulamine4,
                   MuusikaKuulamine5, MuusikaKuulamine6, MuusikaKuulamine7, MuusikaKuulamine8,
                   MuusikaKuulamine9, MuusikaKuulamine10, TulemusLeht):
             frame = F(container, self)
@@ -94,9 +94,35 @@ class Application(tk.Tk):
         style.configure("BW.TLabel", foreground="black", font=("Times New Roman", 15))
         style.configure("TButton", padding=5, relief="flat", font=("Times New Roman", 13), background="#ccc")
 
+    #def punktidFunk(self):
+    #    self.punktid = tk.IntVar(self)
+    #    return self.punktid
+
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+
+class MuutujaHoidja(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        self.shared_data = {
+            "punktid": tk.IntVar()
+        }
+
+    def tulemus(self, heliSamasus, pakkumine):
+        if pakkumine is heliSamasus:
+            self.addone()
+
+    def addone(self):
+        punkt = self.shared_data["punktid"].get()
+        print(punkt)
+        punkt += 1
+        self.shared_data["punktid"].set(punkt)
+        print(self.shared_data["punktid"].get())
 
 
 class AlgusLeht(tk.Frame):
@@ -124,8 +150,6 @@ class MuusikaKuulamine1(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        viimane_leht = TulemusLeht(parent, controller)
-
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 1/10")
         label.pack(pady=10, padx=10)
 
@@ -146,11 +170,11 @@ class MuusikaKuulamine1(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -162,8 +186,6 @@ class MuusikaKuulamine2(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 2/10")
         label.pack(pady=10, padx=10)
@@ -185,11 +207,11 @@ class MuusikaKuulamine2(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -201,8 +223,6 @@ class MuusikaKuulamine3(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 3/10")
         label.pack(pady=10, padx=10)
@@ -224,11 +244,11 @@ class MuusikaKuulamine3(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -240,8 +260,6 @@ class MuusikaKuulamine4(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 4/10")
         label.pack(pady=10, padx=10)
@@ -263,11 +281,11 @@ class MuusikaKuulamine4(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -279,8 +297,6 @@ class MuusikaKuulamine5(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 5/10")
         label.pack(pady=10, padx=10)
@@ -302,11 +318,11 @@ class MuusikaKuulamine5(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -318,8 +334,6 @@ class MuusikaKuulamine6(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 6/10")
         label.pack(pady=10, padx=10)
@@ -341,11 +355,11 @@ class MuusikaKuulamine6(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -357,8 +371,6 @@ class MuusikaKuulamine7(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 7/10")
         label.pack(pady=10, padx=10)
@@ -380,11 +392,11 @@ class MuusikaKuulamine7(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -396,8 +408,6 @@ class MuusikaKuulamine8(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 8/10")
         label.pack(pady=10, padx=10)
@@ -419,11 +429,11 @@ class MuusikaKuulamine8(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -435,8 +445,6 @@ class MuusikaKuulamine9(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 9/10")
         label.pack(pady=10, padx=10)
@@ -458,11 +466,11 @@ class MuusikaKuulamine9(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -475,8 +483,6 @@ class MuusikaKuulamine10(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 #        self.update_idletasks()
-
-        viimane_leht = TulemusLeht(parent, controller)
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 10/10")
         label.pack(pady=10, padx=10)
@@ -498,11 +504,11 @@ class MuusikaKuulamine10(tk.Frame):
         button3.pack()
 
         button4 = ttk.Button(self, text="Sama",
-                             command=lambda: viimane_leht.tulemus(onSama, True))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, True))
         button4.pack()
 
         button5 = ttk.Button(self, text="Erinev",
-                             command=lambda: viimane_leht.tulemus(onSama, False))
+                             command=lambda: self.controller.frames[MuutujaHoidja].tulemus(onSama, False))
         button5.pack()
 
         button1 = ttk.Button(self, text="Järgmine küsimus",
@@ -515,14 +521,13 @@ class TulemusLeht(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        global mingi_muutuja
-        self.punktid = tk.IntVar()
 
         label2 = ttk.Label(self, text="Te arvasite õigesti:")
         label2.configure(font=("Times New Roman", 14))
         label2.pack(pady=10, padx=10)
 
-        self.label = tk.Label(self, textvariable=self.punktid)
+        self.label = tk.Label(self, textvariable=self.controller.frames[MuutujaHoidja].
+                              shared_data["punktid"])
         self.label.configure(font=("Times New Roman", 14))
         self.label.pack(padx=10)
 
@@ -548,18 +553,6 @@ kui ka kuulamise korral.
         button1 = ttk.Button(self, text="Tagasi algusesse",
                              command=lambda: controller.show_frame(AlgusLeht))
         button1.pack(pady=20)
-
-    def tulemus(self, heliSamasus, pakkumine):
-        if pakkumine is heliSamasus:
-            self.addone()
-
-    def addone(self):
-        punkt = self.punktid.get()
-        print(punkt)
-        punkt = punkt + 1
-        print(punkt)
-        self.punktid.set(punkt)
-        print(self.punktid.get())
 
 
 app = Application()
