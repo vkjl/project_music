@@ -94,9 +94,6 @@ class Application(tk.Tk):
         style.configure("BW.TLabel", foreground="black", font=("Times New Roman", 15))
         style.configure("TButton", padding=5, relief="flat", font=("Times New Roman", 13), background="#ccc")
 
-    #def punktidFunk(self):
-    #    self.punktid = tk.IntVar(self)
-    #    return self.punktid
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -112,6 +109,7 @@ class MuutujaHoidja(tk.Frame):
         self.shared_data = {
             "punktid": tk.IntVar()
         }
+
 
     def tulemus(self, heliSamasus, pakkumine):
         if pakkumine is heliSamasus:
@@ -482,7 +480,6 @@ class MuusikaKuulamine10(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-#        self.update_idletasks()
 
         label = ttk.Label(self, style="BW.TLabel", text="Küsimus 10/10")
         label.pack(pady=10, padx=10)
