@@ -98,10 +98,6 @@ class Application(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
-    #def get_page(self):
-     #   return "TulemusLeht(parent, controller)"
-
-
 
 class AlgusLeht(tk.Frame):
 
